@@ -34,3 +34,7 @@ probes:
   readiness:
     initialDelaySeconds: 10
     periodSeconds: 5
+serviceAccount:
+  create: true
+  name: "rabbitmq-service-account"
+
