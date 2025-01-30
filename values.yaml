@@ -38,5 +38,7 @@ rabbitmq:
     - rabbit@rabbitmq-2.rabbitmq.rabbit.svc.cluster.local
 
 auth:
-  username: admin
-  password: cGFzc3dvcmRAMTIz  
+  username: "admin"       # The username for RabbitMQ
+  password: "password@123"  # The password for RabbitMQ
+  erlangCookie: "my-erlang-cookie"  # The Erlang cookie used for clustering
+
