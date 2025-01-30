@@ -37,6 +37,11 @@ probes:
 serviceAccount:
   create: true
   name: "rabbitmq-service-account"
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
 ingress:
   enabled: false
   className: ""
