@@ -37,7 +37,6 @@ spec:
               containerPort: 5672
             - name: management
               containerPort: 15672
-          # Liveness and Readiness probes removed
           volumeMounts:
             - name: data
               mountPath: /var/lib/rabbitmq
