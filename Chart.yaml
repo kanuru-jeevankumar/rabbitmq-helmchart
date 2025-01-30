@@ -1,5 +1,6 @@
 apiVersion: v2
-name: rabbitmq
-description: A Helm chart for RabbitMQ with a 3-node cluster
-version: 0.1.0
+name: rabbitmq-cluster
+description: A Helm chart for deploying a RabbitMQ cluster
+type: application
+version: 1.0.0
 appVersion: "3.12"

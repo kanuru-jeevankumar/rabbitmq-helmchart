@@ -40,6 +40,20 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /var/lib/rabbitmq
+          livenessProbe:
+            httpGet:
+              path: /api/healthchecks/node
+              port: 15672
+            initialDelaySeconds: {{ .Values.healthChecks.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.healthChecks.livenessProbe.periodSeconds }}
+            failureThreshold: {{ .Values.healthChecks.livenessProbe.failureThreshold }}
+          readinessProbe:
+            httpGet:
+              path: /api/healthchecks/node
+              port: 15672
+            initialDelaySeconds: {{ .Values.healthChecks.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.healthChecks.readinessProbe.periodSeconds }}
+            failureThreshold: {{ .Values.healthChecks.readinessProbe.failureThreshold }}
       volumes:
         - name: data
           persistentVolumeClaim:

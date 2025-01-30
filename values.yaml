@@ -28,35 +28,23 @@ auth:
   password: "password@123"
   erlangCookie: "my-erlang-cookie"
 
-# Health checks have been removed
-# healthChecks:
-#   liveness:
-#     path: /api/healthchecks/node
-#     port: 15672
-#     initialDelaySeconds: 30
-#     periodSeconds: 10
-#     failureThreshold: 3
-#   readiness:
-#     path: /api/healthchecks/node
-#     port: 15672
-#     initialDelaySeconds: 30
-#     periodSeconds: 10
-#     failureThreshold: 3
+healthChecks:
+  enabled: true
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    failureThreshold: 3
+  readinessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    failureThreshold: 3
 
-ingress:
-  enabled: false
-  hosts:
-    - host: rabbitmq.local
-      paths:
-        - path: /
-          pathType: Prefix
-  tls: []
 serviceAccount:
-  create: true
-  name: "rabbitmq-service-account"  # Add a name here
+  create: false
+  name: "rabbitmq-service-account"
+
 autoscaling:
-  enabled: false  # Set to true if you want to enable autoscaling
+  enabled: false
   minReplicas: 1
   maxReplicas: 5
   targetCPUUtilizationPercentage: 80
-
