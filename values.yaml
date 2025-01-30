@@ -31,16 +31,16 @@ auth:
 probes:
   liveness:
     httpGet:
-      path: /api/healthchecks/node    # Updated to RabbitMQ health endpoint
-      port: 15672                      # Correct management port for RabbitMQ
-    initialDelaySeconds: 30            # Increased delay to allow RabbitMQ to initialize
+      path: /api/healthchecks/node
+      port: 15672
+    initialDelaySeconds: 30
     periodSeconds: 10
     failureThreshold: 3
   readiness:
     httpGet:
-      path: /api/healthchecks/node    # Updated to RabbitMQ health endpoint
-      port: 15672                      # Correct management port for RabbitMQ
-    initialDelaySeconds: 30            # Increased delay to allow RabbitMQ to initialize
+      path: /api/healthchecks/node
+      port: 15672
+    initialDelaySeconds: 30
     periodSeconds: 10
     failureThreshold: 3
 
