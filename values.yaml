@@ -28,21 +28,21 @@ auth:
   password: "password@123"
   erlangCookie: "my-erlang-cookie"
 
-probes:
-  liveness:
-    httpGet:
-      path: /api/healthchecks/node
-      port: 15672
-    initialDelaySeconds: 30
-    periodSeconds: 10
-    failureThreshold: 3
-  readiness:
-    httpGet:
-      path: /api/healthchecks/node
-      port: 15672
-    initialDelaySeconds: 30
-    periodSeconds: 10
-    failureThreshold: 3
+#probes:
+  #liveness:
+    #httpGet:
+      #path: /api/healthchecks/node
+      #port: 15672
+    #initialDelaySeconds: 30
+    #periodSeconds: 10
+    #failureThreshold: 3
+  #readiness:
+    #httpGet:
+      #path: /api/healthchecks/node
+      #port: 15672
+    #initialDelaySeconds: 30
+    #periodSeconds: 10
+    #failureThreshold: 3
 
 serviceAccount:
   create: true
