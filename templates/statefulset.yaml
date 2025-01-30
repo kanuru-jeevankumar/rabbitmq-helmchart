@@ -2,9 +2,12 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: rabbitmq
+  namespace: rabbit
+  labels:
+    app: rabbitmq
 spec:
-  serviceName: rabbitmq
-  replicas: {{ .Values.replicaCount }}
+  serviceName: "rabbitmq"
+  replicas: 3
   selector:
     matchLabels:
       app: rabbitmq
@@ -16,45 +19,41 @@ spec:
       initContainers:
         - name: rabbitmq-peer-discovery
           image: busybox
-          command: ['sh', '-c', 'echo waiting for cluster setup...; sleep 10']
+          command:
+            - sh
+            - -c
+            - echo waiting for cluster setup...; sleep 10
       containers:
         - name: rabbitmq
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: rabbitmq:3.12-management
+          ports:
+            - containerPort: 5672
+            - containerPort: 15672
           env:
             - name: RABBITMQ_ERLANG_COOKIE
-              value: "{{ .Values.auth.erlangCookie }}"
+              value: "{{ .Values.rabbitmq.erlangCookie }}"
             - name: RABBITMQ_DEFAULT_USER
-              value: "{{ .Values.auth.username }}"
+              value: "{{ .Values.rabbitmq.defaultUser }}"
             - name: RABBITMQ_DEFAULT_PASS
-              value: "{{ .Values.auth.password }}"
+              value: "{{ .Values.rabbitmq.defaultPass }}"
             - name: RABBITMQ_NODENAME
-              value: "rabbit@$(HOSTNAME).rabbitmq.default.svc.cluster.local"
+              value: rabbit@$(HOSTNAME).rabbitmq.rabbit.svc.cluster.local
             - name: RABBITMQ_USE_LONGNAME
               value: "true"
-          ports:
-            - name: amqp
-              containerPort: 5672
-            - name: management
-              containerPort: 15672
           volumeMounts:
             - name: data
               mountPath: /var/lib/rabbitmq
-          livenessProbe:
-            httpGet:
-              path: /api/healthchecks/node
-              port: 15672
-            initialDelaySeconds: {{ .Values.healthChecks.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.healthChecks.livenessProbe.periodSeconds }}
-            failureThreshold: {{ .Values.healthChecks.livenessProbe.failureThreshold }}
-          readinessProbe:
-            httpGet:
-              path: /api/healthchecks/node
-              port: 15672
-            initialDelaySeconds: {{ .Values.healthChecks.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.healthChecks.readinessProbe.periodSeconds }}
-            failureThreshold: {{ .Values.healthChecks.readinessProbe.failureThreshold }}
       volumes:
         - name: data
           persistentVolumeClaim:
             claimName: rabbitmq-pvc
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        annotations:
+          volume.beta.kubernetes.io/storage-class: "standard"
+      spec:
+        accessModes: [ReadWriteOnce]
+        resources:
+          requests:
+            storage: 8Gi
