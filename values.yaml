@@ -36,3 +36,7 @@ rabbitmq:
     - rabbit@rabbitmq-0.rabbitmq.rabbit.svc.cluster.local
     - rabbit@rabbitmq-1.rabbitmq.rabbit.svc.cluster.local
     - rabbit@rabbitmq-2.rabbitmq.rabbit.svc.cluster.local
+
+auth:
+  username: admin
+  password: password@123
