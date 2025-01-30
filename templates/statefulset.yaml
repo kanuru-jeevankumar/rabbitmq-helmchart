@@ -37,18 +37,7 @@ spec:
               containerPort: 5672
             - name: management
               containerPort: 15672
-          livenessProbe:
-            httpGet:
-              path: /api/healthchecks/node
-              port: management
-            initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
-            periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
-          readinessProbe:
-            httpGet:
-              path: /api/healthchecks/node
-              port: management
-            initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
-            periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
+          # Liveness and Readiness probes are removed here
           volumeMounts:
             - name: data
               mountPath: /var/lib/rabbitmq
