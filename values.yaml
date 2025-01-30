@@ -5,6 +5,9 @@ image:
   tag: "3.12-management"
   pullPolicy: IfNotPresent
 
+serviceAccount:
+  create: false  # Disable service account creation
+
 service:
   type: ClusterIP
   port: 5672
