@@ -54,4 +54,9 @@ ingress:
 serviceAccount:
   create: true
   name: "rabbitmq-service-account"  # Add a name here
+autoscaling:
+  enabled: false  # Set to true if you want to enable autoscaling
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
 
