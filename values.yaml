@@ -23,12 +23,15 @@ resources:
 
 persistence:
   enabled: true
-  accessMode: ReadWriteOnce
-  size: 8Gi
-  storageClass: "standard"
+  size: 8Gi  # Ensuring this matches StatefulSet
+  storageClass: standard
+
+auth:
+  username: "admin"
+  password: "password@123"
+  erlangCookie: "my-erlang-cookie"  # Keeping only one Erlang cookie
 
 rabbitmq:
-  erlangCookie: my-erlang-cookie
   defaultUser: admin
   defaultPass: password@123
   useLongName: true
@@ -36,9 +39,3 @@ rabbitmq:
     - rabbit@rabbitmq-0.rabbitmq.rabbit.svc.cluster.local
     - rabbit@rabbitmq-1.rabbitmq.rabbit.svc.cluster.local
     - rabbit@rabbitmq-2.rabbitmq.rabbit.svc.cluster.local
-
-auth:
-  username: "admin"       # The username for RabbitMQ
-  password: "password@123"  # The password for RabbitMQ
-  erlangCookie: "my-erlang-cookie"  # The Erlang cookie used for clustering
-

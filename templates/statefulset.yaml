@@ -7,7 +7,7 @@ metadata:
     app: rabbitmq
 spec:
   serviceName: "rabbitmq"
-  replicas: 3
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: rabbitmq
@@ -25,17 +25,17 @@ spec:
             - echo waiting for cluster setup...; sleep 10
       containers:
         - name: rabbitmq
-          image: rabbitmq:3.12-management
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           ports:
             - containerPort: 5672
             - containerPort: 15672
           env:
             - name: RABBITMQ_ERLANG_COOKIE
-              value: "{{ .Values.rabbitmq.erlangCookie }}"
+              value: "{{ .Values.auth.erlangCookie }}"
             - name: RABBITMQ_DEFAULT_USER
-              value: "{{ .Values.rabbitmq.defaultUser }}"
+              value: "{{ .Values.auth.username }}"
             - name: RABBITMQ_DEFAULT_PASS
-              value: "{{ .Values.rabbitmq.defaultPass }}"
+              value: "{{ .Values.auth.password }}"
             - name: RABBITMQ_NODENAME
               value: rabbit@$(HOSTNAME).rabbitmq.rabbit.svc.cluster.local
             - name: RABBITMQ_USE_LONGNAME
@@ -43,17 +43,13 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /var/lib/rabbitmq
-      volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: rabbitmq-pvc
   volumeClaimTemplates:
     - metadata:
         name: data
-        annotations:
-          volume.beta.kubernetes.io/storage-class: "standard"
       spec:
-        accessModes: [ReadWriteOnce]
+        accessModes:
+          - ReadWriteOnce
         resources:
           requests:
-            storage: 8Gi
+            storage: {{ .Values.persistence.size | default "8Gi" }}
+        storageClassName: {{ .Values.persistence.storageClass | default "standard" }}
