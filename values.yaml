@@ -16,7 +16,7 @@ resources:
 persistence:
   enabled: true
   size: 5Gi
-  storageClass: "standard" 
+  storageClass: "standard"
 
 service:
   type: ClusterIP
@@ -30,19 +30,30 @@ auth:
 
 probes:
   liveness:
-    initialDelaySeconds: 10
-    periodSeconds: 5
+    httpGet:
+      path: /api/healthchecks/node    # Updated to RabbitMQ health endpoint
+      port: 15672                      # Correct management port for RabbitMQ
+    initialDelaySeconds: 30            # Increased delay to allow RabbitMQ to initialize
+    periodSeconds: 10
+    failureThreshold: 3
   readiness:
-    initialDelaySeconds: 10
-    periodSeconds: 5
+    httpGet:
+      path: /api/healthchecks/node    # Updated to RabbitMQ health endpoint
+      port: 15672                      # Correct management port for RabbitMQ
+    initialDelaySeconds: 30            # Increased delay to allow RabbitMQ to initialize
+    periodSeconds: 10
+    failureThreshold: 3
+
 serviceAccount:
   create: true
   name: "rabbitmq-service-account"
+
 autoscaling:
   enabled: false
   minReplicas: 1
   maxReplicas: 5
   targetCPUUtilizationPercentage: 80
+
 ingress:
   enabled: false
   className: ""
@@ -53,5 +64,3 @@ ingress:
         - path: /
           pathType: Prefix
   tls: []
-
-
