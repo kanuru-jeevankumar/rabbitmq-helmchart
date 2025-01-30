@@ -23,20 +23,11 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: RABBITMQ_ERLANG_COOKIE
-              valueFrom:
-                secretKeyRef:
-                  name: rabbitmq-secret
-                  key: erlang-cookie
+              value: "{{ .Values.auth.erlangCookie }}"
             - name: RABBITMQ_DEFAULT_USER
-              valueFrom:
-                secretKeyRef:
-                  name: rabbitmq-secret
-                  key: username
+              value: "{{ .Values.auth.username }}"
             - name: RABBITMQ_DEFAULT_PASS
-              valueFrom:
-                secretKeyRef:
-                  name: rabbitmq-secret
-                  key: password
+              value: "{{ .Values.auth.password }}"
             - name: RABBITMQ_NODENAME
               value: "rabbit@$(HOSTNAME).rabbitmq.default.svc.cluster.local"
             - name: RABBITMQ_USE_LONGNAME
