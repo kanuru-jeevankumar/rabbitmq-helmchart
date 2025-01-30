@@ -39,4 +39,4 @@ rabbitmq:
 
 auth:
   username: admin
-  password: password@123
+  password: cGFzc3dvcmRAMTIz  
