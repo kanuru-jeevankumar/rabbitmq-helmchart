@@ -51,4 +51,7 @@ ingress:
         - path: /
           pathType: Prefix
   tls: []
+serviceAccount:
+  create: true
+  name: "rabbitmq-service-account"  # Add a name here
 
